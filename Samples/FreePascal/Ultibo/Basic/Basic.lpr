@@ -2,8 +2,8 @@ program Basic;
 {$mode delphi}{$H+}
 
 uses
- Console,FATFS,FileSystem,GlobalConfig,GlobalConst,GlobalTypes,Logging,
- Platform,QEMUVersatilePB,Serial,SysUtils,Threads,VirtualDisk;
+ Console,GlobalConfig,GlobalConst,GlobalTypes,Logging,
+ Platform,QEMUVersatilePB,Serial,SysUtils,Threads;
 
 procedure Log(S:String);
 begin
