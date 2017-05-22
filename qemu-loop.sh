@@ -1,18 +1,16 @@
 #!/bin/bash
 
-# args - kernel, count
-# sha256 qemu kernel script
-# attach stderr
-# ultibo version, board
-
 TIMEOUTSECONDS=7
 
 function run {
-    LOG=$(date +%Y%m%d-%H%M%S).log
+    LOGDATE=$(date +%Y%m%d-%H%M%S)
+    LOG=$LOGDATE.log
+    PROGRAMSTARTED=0
     date > $LOG
     coproc qemu-system-arm \
         -M versatilepb -cpu cortex-a8 \
-        -m 64M -serial stdio -usb -display none \
+        -m 64M -serial stdio \
+        -net none -display none \
         -kernel artifacts/QEMUVPB/kernel.bin \
         2> qemu.stderr
 
@@ -24,7 +22,8 @@ function run {
             echo "$LINE" >> $LOG
             if [[ $LINE == *"program"* ]]
             then
-                echo $(date +%Y%m%d-%H%M%S) $LINE
+#               echo $LOG $LINE
+                PROGRAMSTARTED=1
                 if [[ $LINE == *"program stop"* ]]
                 then
                     stopqemu
@@ -33,12 +32,26 @@ function run {
             fi
         else
             stopqemu
-            echo
-            echo failure
-            echo
+            echo >> $LOG
+            if [[ $PROGRAMSTARTED == 1 ]]
+            then
+                echo test failed - log monitor did not receive any more log messages >> $LOG
+            else
+                echo test failed - program never reached start point >> $LOG
+            fi
             break
         fi
     done
+    dos2unix -q $LOG
+#   egrep '(test succeeded|error|fail)' $LOG
+    egrep '(error|fail)' $LOG
+    if [[ $? != 0 ]]
+    then
+        echo succeeded
+        mv $LOG ok-$LOG
+    else
+        mv $LOG fail-$LOG
+    fi
 }
 
 function stopqemu {
@@ -49,4 +62,8 @@ function stopqemu {
 while [[ 1 == 1 ]]
 do
     run
+    if [[ $PROGRAMSTARTED == 0 ]]
+    then
+        break
+    fi
 done
