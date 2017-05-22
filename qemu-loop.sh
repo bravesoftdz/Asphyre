@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TIMEOUTSECONDS=7
+TIMEOUTSECONDS=20
 
 function run {
     LOGDATE=$(date +%Y%m%d-%H%M%S)
