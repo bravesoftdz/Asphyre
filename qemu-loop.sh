@@ -12,6 +12,7 @@ function run {
         -m 64M -serial stdio \
         -net none -display none \
         -kernel artifacts/QEMUVPB/kernel.bin \
+        -append "LOGGING_INCLUDE_TICKCOUNT=1" \
         2> qemu.stderr
 
     while [[ 1 == 1 ]]
