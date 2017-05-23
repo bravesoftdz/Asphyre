@@ -10,7 +10,7 @@ function run {
     coproc qemu-system-arm \
         -M versatilepb -cpu cortex-a8 \
         -m 64M -serial stdio \
-        -net none -display none \
+        -usb -net none -display none \
         -kernel artifacts/QEMUVPB/kernel.bin \
         -append "LOGGING_INCLUDE_TICKCOUNT=1" \
         2> qemu.stderr
