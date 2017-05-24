@@ -1,0 +1,1 @@
+Basic.lpr(7,36) Note: Local variable "RightOutput" is assigned but never used
