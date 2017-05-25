@@ -1,7 +1,7 @@
 program Basic;
 
 uses
- QEMUVersatilePB,GlobalConfig,GlobalConst,GlobalTypes,Console,Serial,Platform,Logging;
+ QEMUVersatilePB,GlobalConfig,GlobalConst,GlobalTypes,Console,Logging,Serial,Platform;
 
 var
  LeftStatus,LeftOutput,RightStatus,RightOutput:TWindowHandle;
