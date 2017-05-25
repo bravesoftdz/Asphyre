@@ -1,1 +1,0 @@
-Basic.lpr(92,24) Warning: Variable "LeftStatus" does not seem to be initialized
