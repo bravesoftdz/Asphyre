@@ -23,22 +23,22 @@ function Monitor(Parameter:Pointer):PtrInt;
 var
  SnapShot,Current:PThreadSnapShot;
 begin
-   Output('monitor thread started ... sleeping for 5 seconds');
-   Sleep(5 * 1000);
-   Output('monitor thread assuming failure');
-   SnapShot:=ThreadSnapShotCreate;
-   Current:=SnapShot;
-   while Assigned(Current) do
-    if Current.Handle = MainThread then
-     begin
-      Output(Format('main thread %s',[ThreadStateToString(Current.State)]));
-      Current:=nil;
-     end
-    else
-     begin
-      Current:=Current.Next;
-     end;
-   ThreadSnapShotDestroy(SnapShot);
+ Output('monitor thread started - sleeping for 5 seconds ...');
+ Sleep(5 * 1000);
+ Output('monitor thread assuming failure');
+ SnapShot:=ThreadSnapShotCreate;
+ Current:=SnapShot;
+ while Assigned(Current) do
+  if Current.Handle = MainThread then
+   begin
+    Output(Format('main thread %s',[ThreadStateToString(Current.State)]));
+    Current:=nil;
+   end
+  else
+   begin
+    Current:=Current.Next;
+   end;
+ ThreadSnapShotDestroy(SnapShot);
  Monitor:=0;
 end;
 
@@ -62,10 +62,10 @@ begin
    Sleep(1 * 1000);
    Output('calling FileSysDriver.MountImage ...');
    MountImageBoolean:=FileSysDriver.MountImage(ImageNo);
-   if not MountImageBoolean then
-    Output(Format('test failed - MountImage failed',[]))
+   if MountImageBoolean then
+    Output('test succeeded - MountImage succeeded')
    else
-    Output(Format('test succeeded - MountImage succeeded',[]));
+    Output('test failed - MountImage failed');
   except on E:Exception do
    begin
     Output(Format('Exception: %s',[E.Message]));
